@@ -6,14 +6,14 @@ module ConfigGem
   class Error < StandardError; end
   class Config
     attr_accessor :attributes
-    def initialize(attributes=nil)
+    def initialize(attributes={})
       @attributes = attributes
 
       yield self if block_given?
     end
 
-    def set(attributes = nil)
-      @attributes = attributes
+    def set(key = nil, value = nil)
+      attributes[key] = value
       yield self if block_given?
     end 
 

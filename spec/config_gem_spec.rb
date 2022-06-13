@@ -9,30 +9,24 @@ RSpec.describe ConfigGem do
   # init instance with block
   let!(:init_instance) do 
     ConfigGem::Config.new.tap do |c|
-      c.attributes = { 'logo_url': 'logo' }
+      c.set :logo, 'logo_url'
     end
   end
   
-  let!(:attributes_hash) do  
-    {
-      'logo': 'logo_url'
-    }
-  end
 
-# 
   it '`get` returns the stored value (nil for non-existing)' do
-    new_obj.set(attributes_hash)
+    new_obj.set(:logo, 'logo_url')
     expect(new_obj.get(:logo)).to eq 'logo_url'
     expect(new_obj.get(:nil_attr)).to eq nil
   end
 
   it "`set` stores the data inside the instance" do
-    new_obj.set(attributes_hash)
-    expect(new_obj.attributes).to eq attributes_hash
+    new_obj.set(:logo, 'logo_url')
+    expect(new_obj.get(:logo)).to eq 'logo_url'
   end
 
   it "the class may be initialized with a block" do
-    expect(init_instance.attributes[:logo_url]).to eq 'logo'
+    expect(init_instance.get(:logo)).to eq 'logo_url'
   end
   
   it "`set` may receive a block for the value" do
