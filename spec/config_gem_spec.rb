@@ -1,9 +1,51 @@
+# frozen_string_literal: true
+
 RSpec.describe ConfigGem do
-  it "has a version number" do
-    expect(ConfigGem::VERSION).not_to be nil
+  let!(:new_obj) do
+    att = {'logo_url': 'something'}
+    ConfigGem::Config.new(att)
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  let!(:init_instance) do 
+    ConfigGem::Config.new.tap do |c|
+      c.attributes = { 'logo_url': 'logo' }
+    end
+  end
+  
+  let!(:get_instance) do 
+    ConfigGem::Config.new.tap do |c|
+      c.attributes = { 'logo_url': 'logo' }
+    end
+  end
+
+  let!(:attributes_hash) do  
+    {
+      'logo': 'logo_url'
+    }
+  end
+
+# 
+  it '`get` returns the stored value (nil for non-existing)' do
+    new_obj.set(attributes_hash)
+    expect(new_obj.get(:logo)).to eq 'something'
+    expect(new_obj.get(:nil_attr)).to eq nil
+  end
+
+  it "`set` stores the data inside the instance" do
+    new_obj.set(attributes_hash)
+    expect(new_obj.attributes['logo']).to eq new_obj.get(:logo)
+  end
+
+  it "the class may be initialized with a block" do
+    expect(init_instance.attributes[:logo_url]).to eq 'logo'
+  end
+  
+  it "`set` may receive a block for the value" do
+    new_obj.set do |c|
+      c.attributes = {
+        'domain': 'domain_name'
+      }
+    end
+    expect(new_obj.attributes[:domain]).to eq 'domain_name'
   end
 end
