@@ -13,13 +13,12 @@ module ConfigGem
     end
 
     def set(attributes = nil)
-      # @attributes = {}
       @attributes = attributes
       yield self if block_given?
     end 
 
     def get(key)
-      @attributes[:key]
+      @attributes[key]
     end
   end
 end
